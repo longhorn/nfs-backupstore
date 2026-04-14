@@ -10,13 +10,13 @@ RUN zypper -n ref && \
 # Based on https://github.com/kubernetes-sigs/nfs-ganesha-server-and-external-provisioner/blob/master/deploy/docker/x86_64/Dockerfile
 # Build ganesha from source, install it to /usr/local and a use multi stage build to have a smaller image
 # RUN dnf install -y tar gcc cmake-3.14.2-1.fc30 autoconf libtool bison flex make gcc-c++ krb5-devel dbus-devel jemalloc-devel libnfsidmap-devel libnsl2-devel userspace-rcu-devel patch libblkid-devel
-RUN zypper -n addrepo --refresh https://download.opensuse.org/repositories/system:/snappy/SLE_15/ snappy && \
-    zypper -n addrepo --refresh https://download.opensuse.org/repositories/devel:/tools:/building/15.6/devel:tools:building.repo && \
-    zypper --gpg-auto-import-keys ref
 
-RUN zypper -n install autoconf bison curl cmake doxygen make git gcc14 gcc14-c++ flex Mesa-libGL-devel libdbus-1-3 \
-    nfsidmap-devel liburcu-devel libblkid-devel e2fsprogs e2fsprogs-devel xfsprogs xfsprogs-devel \
-    tar gzip dbus-1-devel lsb-release graphviz-devel libnsl-devel libcurl-devel libjson-c-devel libacl-devel jq && \
+
+RUN zypper -n install autoconf bison cmake curl doxygen flex gcc14 gcc14-c++ git make tar gzip jq \
+                      libcurl-devel libjson-c-devel libacl-devel lsb-release \
+                      libdbus-1-3 liburcu-devel libblkid-devel e2fsprogs e2fsprogs-devel xfsprogs xfsprogs-devel \
+                      dbus-1-devel Mesa-libGL-devel nfsidmap-devel \
+                      graphviz-devel libnsl-devel && \
     rm -rf /var/cache/zypp/*
 
 RUN git clone https://github.com/longhorn/dep-versions.git -b ${SRC_BRANCH} /usr/src/dep-versions && \
