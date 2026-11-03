@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1.15.1
-FROM registry.suse.com/bci/bci-base:15.7 AS lib_builder
+FROM registry.suse.com/bci/bci-base:15.7@sha256:79595412dc8da75bac1a5f9cc75c7d579523dbeeb6fc594d10b22967819760c3 AS lib_builder
 
 ARG SRC_BRANCH=master
 ARG SRC_TAG
@@ -32,7 +32,7 @@ RUN export REPO_OVERRIDE="" && \
     bash /usr/src/dep-versions/scripts/build-nfs-ganesha.sh "${REPO_OVERRIDE}" "${COMMIT_ID_OVERRIDE}"
 
 
-FROM registry.suse.com/bci/bci-base:15.7 AS release
+FROM registry.suse.com/bci/bci-base:15.7@sha256:79595412dc8da75bac1a5f9cc75c7d579523dbeeb6fc594d10b22967819760c3 AS release
 
 ARG TARGETPLATFORM
 RUN if [ "$TARGETPLATFORM" != "linux/amd64" ] && [ "$TARGETPLATFORM" != "linux/arm64" ]; then \
@@ -44,9 +44,6 @@ ENV TINI_VERSION v0.19.0
 
 RUN zypper -n ref && \
     zypper update -y
-
-RUN zypper addrepo --refresh https://download.opensuse.org/repositories/system:/snappy/SLE_15/ snappy && \
-    zypper --gpg-auto-import-keys ref
 
 # RUN microdnf install -y nano tar lsof e2fsprogs fuse-libs libss libblkid userspace-rcu dbus-x11 rpcbind hostname nfs-utils xfsprogs jemalloc libnfsidmap && microdnf clean all
 RUN zypper -n install rpcbind hostname libblkid1 liburcu6 libjson-c* dbus-1-x11 dbus-1 nfsidmap-devel \
