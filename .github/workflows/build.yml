@@ -11,7 +11,7 @@ on:
 jobs:
   build:
     name: Build binaries
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     outputs:
       version_major: ${{ steps.build_info.outputs.version_major }}
       version_minor: ${{ steps.build_info.outputs.version_minor }}
